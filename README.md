@@ -6,7 +6,7 @@ PyHivemall
 ## Installation
 
 ```
-$ pip install git+https://github.com/takuti/pyhivemall.git
+$ pip install git+https://github.com/takuti/PyHivemall.git
 ```
 
 ## Usage
@@ -23,7 +23,7 @@ from pyhivemall import HiveConnection
 conn = HiveConnection()
 ```
 
-### Connect to [Treasure Data](https://www.treasuredata.com/)
+### Connect to [Treasure Data](https://www.treasuredata.com/live-data-platform/)
 
 ```py
 import os
