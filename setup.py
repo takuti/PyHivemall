@@ -37,6 +37,9 @@ def setup_package():
                      'Programming Language :: Python :: 3.6'],
         packages=find_packages(exclude=['*tests*']),
         install_requires=[
+            'numpy',
+            'scikit_learn',
+            'pandas-td',
             'pyhive',
             'thrift',
             'thrift-sasl'])
