@@ -18,7 +18,7 @@ $ hive --service hiveserver2
 ```
 
 ```py
-from hivemall import HiveConnection
+from pyhivemall import HiveConnection
 
 conn = HiveConnection()
 ```
@@ -27,7 +27,7 @@ conn = HiveConnection()
 
 ```py
 import os
-from hivemall import TdConnection
+from pyhivemall import TdConnection
 
 conn = TdConnection(apikey=os.environ['TD_API_KEY'],
                     endpoint=os.environ['TD_API_SERVER'],

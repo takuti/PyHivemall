@@ -1,5 +1,5 @@
-import hivemall
-VERSION = hivemall.__version__
+import pyhivemall
+VERSION = pyhivemall.__version__
 
 DISTNAME = 'pyhivemall'
 DESCRIPTION = 'Using machine learning model from Apache Hivemall in Python'
