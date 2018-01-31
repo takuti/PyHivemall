@@ -34,9 +34,20 @@ conn = TdConnection(apikey=os.environ['TD_API_KEY'],
                     database='sample_datasets')
 ```
 
-### Load model
+### Load model with vectorizer
 
 ```py
-lr = load_model('LogisticRegression', 'lr_model_table', conn,
-                feature_column='feature', weight_column='weight', bias_feature='bias')
+lr, vectorizer = load_model('LogisticRegression', 'lr_model_table', conn,
+                            feature_column='feature', weight_column='weight', bias_feature='bias')
+```
+
+Note that obtained model is compatible with corresponding [scikit-learn](http://scikit-learn.org/) model; that is, `lr` has the same parameters and functions as the [`LogisticRegression` model in scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html).
+
+### Vectorize and predict
+
+```py
+d = [{'categorical1': 'foo', 'categorical2': 'xxx', 'quantitative': 2.0},
+     {'categorical1': 'bar', 'categorical2': 'yyy', 'quantitative': 4.0}]
+X = vectorizer.transform(d)
+lr.predict(X)  # yields 0/1 binary label
 ```
