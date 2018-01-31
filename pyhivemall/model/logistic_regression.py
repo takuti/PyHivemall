@@ -33,6 +33,7 @@ class LogisticRegression(linear_model.LogisticRegression):
 
         self.intercept_ = intercept
         self.coef_ = coef
+        self.classes_ = np.array([0, 1])
 
     def vectorize(self, X):
         return self.vectorizer_.transform(X)
