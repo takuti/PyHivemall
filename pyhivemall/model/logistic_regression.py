@@ -5,8 +5,9 @@ import numpy as np
 
 class LogisticRegression(linear_model.LogisticRegression):
 
-    def __init__(self, source_dataframe=None, feature_column='feature', weight_column='weight', bias_feature=None, **kwargs):
-        super(linear_model.LogisticRegression, self).__init__(**kwargs)
+    @staticmethod
+    def load(source_dataframe=None, feature_column='feature', weight_column='weight', bias_feature=None, **kwargs):
+        lr = linear_model.LogisticRegression(**kwargs)
 
         intercept = np.array([0.])  # (1,)
         coef = np.array([[]])  # (1, n_feature)
@@ -27,13 +28,12 @@ class LogisticRegression(linear_model.LogisticRegression):
                 vocabulary[feature] = i
                 feature_names.append(feature)
 
-        self.vectorizer_ = DictVectorizer(separator='#')
-        self.vectorizer_.vocabulary_ = vocabulary
-        self.vectorizer_.feature_names_ = feature_names
+        lr.intercept_ = intercept
+        lr.coef_ = coef
+        lr.classes_ = np.array([0, 1])
 
-        self.intercept_ = intercept
-        self.coef_ = coef
-        self.classes_ = np.array([0, 1])
+        vectorizer = DictVectorizer(separator='#')
+        vectorizer.vocabulary_ = vocabulary
+        vectorizer.feature_names_ = feature_names
 
-    def vectorize(self, X):
-        return self.vectorizer_.transform(X)
+        return lr, vectorizer
