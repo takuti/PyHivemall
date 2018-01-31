@@ -1,0 +1,13 @@
+diff --git a/core/pom.xml b/core/pom.xml
+index 9368993c..65c114e8 100644
+--- a/core/pom.xml
++++ b/core/pom.xml
+@@ -139,7 +139,7 @@
+ 		<dependency>
+ 			<groupId>org.roaringbitmap</groupId>
+ 			<artifactId>RoaringBitmap</artifactId>
+-			<version>[0.6,)</version>
++			<version>0.6.51</version>
+ 			<scope>compile</scope>
+ 		</dependency>
+ 
