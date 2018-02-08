@@ -1,10 +1,13 @@
 ## Running on Docker
 
-> Note: This Docker container is experimental and may not work correctly.
+> Container orchestration is based on [big-data-europe/docker-hive](https://github.com/big-data-europe/docker-hive)
+
+```sh
+$ wget https://github.com/myui/hivemall/releases/download/v0.4.2-rc.2/hivemall-core-0.4.2-rc.2-with-dependencies.jar
+```
 
 ```
-$ docker build -t pyhivemall .
-$ docker run --rm -it -p 10000:10000 pyhivemall
+$ docker-compose up -d
 ```
 
 ```py
