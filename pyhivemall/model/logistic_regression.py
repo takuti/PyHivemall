@@ -16,6 +16,7 @@ class LogisticRegression(linear_model.LogisticRegression):
         feature_names = []
 
         if source_dataframe is not None:
+            j = 0
             for i, row in source_dataframe.iterrows():
                 feature, weight = row[feature_column], row[weight_column]
 
@@ -25,7 +26,8 @@ class LogisticRegression(linear_model.LogisticRegression):
 
                 coef = np.append(coef, [[weight]], axis=1)
 
-                vocabulary[feature] = i
+                vocabulary[feature] = j
+                j += 1
                 feature_names.append(feature)
 
         lr.intercept_ = intercept
