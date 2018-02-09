@@ -18,9 +18,7 @@ class HiveConnection(BaseConnection):
         self.conn = hive.Connection(host=host, port=port, database=database)
 
     def fetch_table(self, table, columns=['*']):
-        return pd.read_sql('select %(columns)s from %(table)s',
-                           self.conn,
-                           params={'columns': ', '.join(columns), 'table': table})
+        return pd.read_sql('select %s from %s' % (', '.join(columns), table), self.conn)
 
 
 class TdConnection(BaseConnection):
