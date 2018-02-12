@@ -27,5 +27,5 @@ class TdConnection(BaseConnection):
         conn = td.connect(apikey=apikey, endpoint=endpoint)
         self.engine = td.create_engine('presto:{}'.format(database), conn)
 
-    def fetch_table(self, table):
+    def fetch_table(self, table, **kwargs):
         return td.read_td_table(table, self.engine)
