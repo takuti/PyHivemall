@@ -1,6 +1,7 @@
 from sklearn import linear_model
 from sklearn.feature_extraction import DictVectorizer
 import numpy as np
+import pandas as pd
 
 
 class LogisticRegression(linear_model.LogisticRegression):
@@ -39,3 +40,18 @@ class LogisticRegression(linear_model.LogisticRegression):
         vectorizer.feature_names_ = feature_names
 
         return lr, vectorizer
+
+    def store(self, conn, table, vocabulary, feature_column='feature', weight_column='weight', bias_feature=None):
+        df = self._to_frame(vocabulary, feature_column, weight_column, bias_feature)
+        conn.import_frame(df, table)
+
+    def _to_frame(self, vocabulary, feature_column, weight_column, bias_feature):
+        data = []
+
+        for feature, index in vocabulary.items():
+            data.append((feature, self.coef_[0, index]))
+
+        if bias_feature is not None:
+            data.append((bias_feature, self.intercept_[0]))
+
+        return pd.DataFrame.from_records(data, columns=[feature_column, weight_column])
