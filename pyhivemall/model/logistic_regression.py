@@ -7,7 +7,7 @@ class LogisticRegression(linear_model.LogisticRegression):
 
     @staticmethod
     def load(source_dataframe=None, feature_column='feature', weight_column='weight', bias_feature=None, **kwargs):
-        lr = linear_model.LogisticRegression(**kwargs)
+        lr = LogisticRegression(**kwargs)
 
         intercept = np.array([0.])  # (1,)
         coef = np.array([[]])  # (1, n_feature)
