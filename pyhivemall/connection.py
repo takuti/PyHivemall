@@ -10,7 +10,7 @@ class BaseConnection(object):
     def __init__(self, **kwargs):
         pass
 
-    def fetch_table(self, table, **kwargs):
+    def fetch_table(self, table):
         return None
 
     def import_frame(self, frame, table):
@@ -23,8 +23,8 @@ class HiveConnection(BaseConnection):
         self.conn = hive.Connection(host=host, port=port, database=database)
         self.engine = create_engine('hive://{}:{}/{}'.format(host, port, database))
 
-    def fetch_table(self, table, columns=['*']):
-        return pd.read_sql('select %s from %s' % (', '.join(columns), table), self.conn)
+    def fetch_table(self, table):
+        return pd.read_sql_table(table, self.engine)
 
     def import_frame(self, frame, table):
         # NOTE: cannot fully utilize sqlalchemy due to a bug: https://github.com/dropbox/PyHive/issues/50
@@ -51,7 +51,7 @@ class TdConnection(BaseConnection):
         self.database = database
         self.engine = td.create_engine('presto:{}'.format(database), self.conn)
 
-    def fetch_table(self, table, **kwargs):
+    def fetch_table(self, table):
         return td.read_td_table(table, self.engine)
 
     def import_frame(self, frame, table):
