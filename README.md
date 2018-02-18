@@ -37,11 +37,14 @@ conn = TdConnection(apikey=os.environ['TD_API_KEY'],
 ### Load model with vectorizer
 
 ```py
-lr, vectorizer = load_model('LogisticRegression', 'lr_model_table', conn,
-                            feature_column='feature', weight_column='weight', bias_feature='bias')
+from pyhivemall.linear_model import LogisticRegression
+lr, vectorizer = LogisticRegression.load(conn, 'lr_model_table',
+                                         feature_column='feature',
+                                         weight_column='weight',
+                                         bias_feature='bias')
 ```
 
-Note that obtained model is compatible with corresponding [scikit-learn](http://scikit-learn.org/) model; that is, `lr` has the same parameters and functions as the [`LogisticRegression` model in scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html).
+Note that obtained model is basically compatible with corresponding [scikit-learn](http://scikit-learn.org/) model; that is, `lr` has the same parameters and functions as the [`LogisticRegression` model in scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html).
 
 ### Vectorize and predict
 

@@ -51,10 +51,13 @@ Eventually, you can access to the logistic regression model on your local enviro
 
 ```py
 from pyhivemall import HiveConnection
+from pyhivemall.linear_model import LogisticRegression
 
 conn = HiveConnection(host='localhost', port=10000)
-lr, vectorizer = load_model('LogisticRegression', 'breast_cancer_logress_model', conn,
-                            feature_column='feature', weight_column='weight', bias_feature='0')
+lr, vectorizer = LogisticRegression.load(conn, 'breast_cancer_logress_model',
+                                         feature_column='feature',
+                                         weight_column='weight',
+                                         bias_feature='0')
 ```
 
 Check the accuracy of prediction in Python:
