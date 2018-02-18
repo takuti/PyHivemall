@@ -4,7 +4,7 @@ from .logistic_regression import LogisticRegression
 def load_model(model, table, conn, **kwargs):
     df = conn.fetch_table(table)
     if model == 'LogisticRegression':
-        return LogisticRegression.load(source_dataframe=df, **kwargs)
+        return LogisticRegression.load(frame=df, **kwargs)
     raise ValueError("model should be 'LogisticRegression', got %s" % model)
 
 

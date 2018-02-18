@@ -7,7 +7,7 @@ import pandas as pd
 class LogisticRegression(linear_model.LogisticRegression):
 
     @staticmethod
-    def load(source_dataframe=None, feature_column='feature', weight_column='weight', bias_feature=None, **kwargs):
+    def load(frame=None, feature_column='feature', weight_column='weight', bias_feature=None, **kwargs):
         lr = LogisticRegression(**kwargs)
 
         intercept = np.array([0.])  # (1,)
@@ -16,9 +16,9 @@ class LogisticRegression(linear_model.LogisticRegression):
         vocabulary = {}
         feature_names = []
 
-        if source_dataframe is not None:
+        if frame is not None:
             j = 0
-            for i, row in source_dataframe.iterrows():
+            for i, row in frame.iterrows():
                 feature, weight = row[feature_column], row[weight_column]
 
                 if feature == bias_feature:
