@@ -20,10 +20,10 @@ $ hive --service hiveserver2
 ```py
 from pyhivemall import HiveConnection
 
-conn = HiveConnection()
+conn = HiveConnection(host='localhost', port=10000)
 ```
 
-### Connect to [Treasure Data](https://www.treasuredata.com/live-data-platform/)
+### Connect to [Treasure Data](https://docs.treasuredata.com/)
 
 ```py
 import os
@@ -47,6 +47,21 @@ lr, vectorizer = LogisticRegression.load(conn, 'lr_model_table',
 Note that obtained model is basically compatible with corresponding [scikit-learn](http://scikit-learn.org/) model; that is, `lr` has the same parameters and functions as the [`LogisticRegression` model in scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html).
 
 ### Vectorize and predict
+
+Your vectorizer may have the following features:
+
+```py
+vectorizer.feature_names_
+# ['categorical1#foo',
+#  'categorical1#bar',
+#  'categorical1#baz',
+#  'categorical2#xxx',
+#  'categorical2#yyy',
+#  'categorical2#zzz',
+#  'quantitative']
+```
+
+In that case, prediction can be done by:
 
 ```py
 d = [{'categorical1': 'foo', 'categorical2': 'xxx', 'quantitative': 2.0},
