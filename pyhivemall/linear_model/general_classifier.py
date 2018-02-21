@@ -1,6 +1,11 @@
 from sklearn.base import ClassifierMixin
+from sklearn.linear_model.sgd_fast import Hinge
+from sklearn.linear_model.sgd_fast import Log
+from sklearn.linear_model.sgd_fast import SquaredHinge
+from sklearn.linear_model.sgd_fast import ModifiedHuber
 
 from .general_learner_base import GeneralLearnerBase
+from .general_regressor import GeneralRegressor
 
 
 class GeneralClassifier(GeneralLearnerBase, ClassifierMixin):
@@ -63,6 +68,14 @@ class GeneralClassifier(GeneralLearnerBase, ClassifierMixin):
     scale : float, default: 100.0
         Scaling factor for cumulative weights.
     """
+
+    loss_functions = {
+        'hinge': (Hinge, 1.0),
+        'log': (Log, ),
+        'squared_hinge': (SquaredHinge, 1.0),
+        'modified_huber': (ModifiedHuber, ),
+    }
+    loss_functions.update(GeneralRegressor.loss_functions)
 
     def __init__(self, mini_batch=1, loss='hinge', max_iter=100,
                  disable_cv=False, cv_rate=0.005, optimizer='adagrad', eps=1e-6,

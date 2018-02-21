@@ -1,6 +1,11 @@
 from sklearn.base import RegressorMixin
+from sklearn.linear_model.sgd_fast import SquaredLoss
+from sklearn.linear_model.sgd_fast import EpsilonInsensitive
+from sklearn.linear_model.sgd_fast import SquaredEpsilonInsensitive
+from sklearn.linear_model.sgd_fast import Huber
 
 from .general_learner_base import GeneralLearnerBase
+from .sgd_fast import Quantile
 
 
 class GeneralRegressor(GeneralLearnerBase, RegressorMixin):
@@ -62,6 +67,14 @@ class GeneralRegressor(GeneralLearnerBase, RegressorMixin):
     scale : float, default: 100.0
         Scaling factor for cumulative weights.
     """
+
+    loss_functions = {
+        'squared_loss': (SquaredLoss, ),
+        'quantile': (Quantile, 0.5),
+        'epsilon_insensitive': (EpsilonInsensitive, 0.1),
+        'squared_epsilon_insensitive': (SquaredEpsilonInsensitive, 0.1),
+        'huber': (Huber, 1.0),
+    }
 
     def __init__(self, mini_batch=1, loss='squared_loss', max_iter=100,
                  disable_cv=False, cv_rate=0.005, optimizer='adagrad', eps=1e-6,
