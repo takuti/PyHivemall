@@ -14,7 +14,7 @@ class GeneralClassifier(GeneralLearnerBase, ClassifierMixin):
 
     loss : str,
         {'hinge', 'log', 'squared_hinge', 'modified_huber'} or regression loss
-        {'squared', 'quantile', 'epsilon_insensitive', 'squared_epsilon_insensitive', 'huber'},
+        {'squared_loss', 'quantile', 'epsilon_insensitive', 'squared_epsilon_insensitive', 'huber'},
         default: 'hinge'
         Loss function.
 

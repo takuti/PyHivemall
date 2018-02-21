@@ -13,7 +13,7 @@ class GeneralRegressor(GeneralLearnerBase, RegressorMixin):
         Mini batch size. Expecting the value in range [1,100] or so.
 
     loss : str,
-        {'squared', 'quantile', 'epsilon_insensitive', 'squared_epsilon_insensitive', 'huber'},
+        {'squared_loss', 'quantile', 'epsilon_insensitive', 'squared_epsilon_insensitive', 'huber'},
         default: 'squared'
         Loss function.
 
@@ -63,7 +63,7 @@ class GeneralRegressor(GeneralLearnerBase, RegressorMixin):
         Scaling factor for cumulative weights.
     """
 
-    def __init__(self, mini_batch=1, loss='squared', max_iter=100,
+    def __init__(self, mini_batch=1, loss='squared_loss', max_iter=100,
                  disable_cv=False, cv_rate=0.005, optimizer='adagrad', eps=1e-6,
                  rho=0.95, regularization='rda', l1_ratio=0.5, alpha=0.0001,
                  eta='inverse', eta0=0.1, total_steps=None, power_t=0.1,
