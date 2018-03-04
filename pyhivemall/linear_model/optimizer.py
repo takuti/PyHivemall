@@ -31,3 +31,22 @@ class Optimizer(object):
             self.eta = InverseScalingEtaEstimator(eta0=eta0, power_t=power_t)
         else:
             raise ValueError("eta must be one of {'inverse', 'fixed', 'simple'}")
+
+        self.n_steps = 1
+
+    def proceed_step(self):
+        self.n_steps += 1
+
+    def compute_next_weight(self, weight, gradient):
+        g = self.reg.regularize(weight, gradient)
+        delta = self.compute_delta(weight, g)
+        return weight - self.eta.eta(self.n_steps) * delta
+
+    def compute_delta(self, weight, gradient):
+        return gradient
+
+
+class SGD(Optimizer):
+
+    def update(self, feature, weight, gradient):
+        return self.compute_next_weight(weight, gradient)
