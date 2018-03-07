@@ -3,8 +3,33 @@ from sklearn.feature_extraction import DictVectorizer
 import pandas as pd
 import numpy as np
 
+from .optimizer import SGD
+from .optimizer import AdaGrad
+
 
 class GeneralLearnerBase(BaseEstimator):
+
+    def __init__(self, mini_batch=1, max_iter=100, disable_cv=False,
+                 cv_rate=0.005, optimizer='adagrad', eps=1e-6, rho=0.95,
+                 regularization='rda', l1_ratio=0.5, alpha=0.0001, eta='inverse',
+                 eta0=0.1, total_steps=None, power_t=0.1, scale=100.0):
+
+        optimizer = optimizer.lower()
+        if optimizer == 'adagrad':
+            self.optimizer = AdaGrad(regularization=regularization,
+                                     l1_ratio=l1_ratio, alpha=alpha, eta=eta, eta0=eta0,
+                                     total_steps=total_steps, power_t=power_t, eps=eps,
+                                     scale=scale)
+        elif optimizer == 'sgd':
+            self.optimizer = SGD(regularization=regularization,
+                                 l1_ratio=l1_ratio, alpha=alpha, eta=eta, eta0=eta0,
+                                 total_steps=total_steps, power_t=power_t)
+        elif optimizer == 'adadelta':
+            raise NotImplementedError("optimizer 'adadelta' is not implemented yet")
+        elif optimizer == 'adam':
+            raise NotImplementedError("optimizer 'adam' is not implemented yet")
+        else:
+            raise ValueError("optimizer must be {'adagrad', 'sgd', 'adadelta', 'adam'}")
 
     def fit(self, X, y):
         """Fit model."""

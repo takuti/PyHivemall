@@ -76,12 +76,13 @@ class GeneralRegressor(GeneralLearnerBase, RegressorMixin):
         'huber': (Huber, 1.0),
     }
 
-    def __init__(self, mini_batch=1, loss='squared_loss', max_iter=100,
-                 disable_cv=False, cv_rate=0.005, optimizer='adagrad', eps=1e-6,
-                 rho=0.95, regularization='rda', l1_ratio=0.5, alpha=0.0001,
-                 eta='inverse', eta0=0.1, total_steps=None, power_t=0.1,
-                 scale=100.0):
-        pass
+    def __init__(self, loss='squared_loss', **kwargs):
+        super(GeneralRegressor, self).__init__(**kwargs)
+
+        if loss not in self.loss_functions:
+            raise ValueError('The loss `%s` is not supported' % loss)
+        loss_class, args = self.loss_functions[loss]
+        self.loss_function = loss_class(*args)
 
     def fit(self, X, y):
         pass
