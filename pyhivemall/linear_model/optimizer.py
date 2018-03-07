@@ -1,3 +1,5 @@
+import numpy as np
+
 from .regularization import L1
 from .regularization import L2
 from .regularization import ElasticNet
@@ -50,3 +52,22 @@ class SGD(Optimizer):
 
     def update(self, feature, weight, gradient):
         return self.compute_next_weight(weight, gradient)
+
+
+class AdaGrad(Optimizer):
+
+    def __init__(self, regularization='rda', l1_ratio=0.5, alpha=0.0001,
+                 eta='inverse', eta0=0.1, total_steps=None, power_t=0.1,
+                 eps=1e-6, scale=100.0):
+        super(AdaGrad, self).__init__(
+            regularization=regularization, l1_ratio=l1_ratio, alpha=alpha,
+            eta=eta, eta0=eta0, total_steps=total_steps, power_t=power_t)
+
+        self.eps = eps
+        self.scale = scale
+
+        self.scaled_sum_squared_gradient = 0.0
+
+    def compute_delta(self, weight, gradient):
+        self.scaled_sum_squared_gradient = self.scaled_sum_squared_gradient + gradient * (gradient / self.scale)
+        return gradient / (np.sqrt(self.scaled_sum_squared_gradient * self.scale) + self.eps)
