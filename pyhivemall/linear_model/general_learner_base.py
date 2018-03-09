@@ -3,6 +3,8 @@ from sklearn.feature_extraction import DictVectorizer
 import pandas as pd
 import numpy as np
 
+from .general_classifier import GeneralClassifier
+from .general_regressor import GeneralRegressor
 from .optimizer import SGD
 from .optimizer import AdaGrad
 
@@ -76,7 +78,7 @@ class GeneralLearnerBase(BaseEstimator):
         return pred
 
     @staticmethod
-    def load(conn, table, feature_column='feature', weight_column='weight', bias_feature=None, **kwargs):
+    def load(conn, table, feature_column='feature', weight_column='weight', bias_feature=None, classifier=True, regressor=False, **kwargs):
         df = conn.fetch_table(table)
 
         intercept = np.array([0.])  # (1,)
@@ -103,18 +105,19 @@ class GeneralLearnerBase(BaseEstimator):
         vectorizer.vocabulary_ = vocabulary
         vectorizer.feature_names_ = feature_names
 
-        """
-        lr = GeneralRegressor(**kwargs)
+        if classifier:
+            learner = GeneralClassifier(**kwargs)
+        elif regressor:
+            learner = GeneralRegressor(**kwargs)
+        else:
+            raise ValueError('Specify `regressor` or `classifier`')
 
-        lr.fit_intercept = bias_feature is not None
+        learner.fit_intercept = bias_feature is not None
 
-        lr.intercept_ = intercept
-        lr.coef_ = coef
+        learner.intercept_ = intercept
+        learner.coef_ = coef
 
-        return lr, vectorizer
-        """
-
-        return coef, intercept, vectorizer
+        return learner, vectorizer
 
     def store(self, conn, table, vocabulary, feature_column='feature', weight_column='weight', bias_feature=None):
         df = self._to_frame(vocabulary, feature_column, weight_column, bias_feature)
