@@ -85,8 +85,6 @@ class GeneralClassifier(GeneralLearnerBase, ClassifierMixin):
         loss_class, args = self.loss_functions[loss]
         self.loss_function = loss_class(*args)
 
-    def fit(self, X, y):
-        pass
-
-    def predict(self, X):
-        pass
+    def train(self, x, y):
+        pred = self.predict(x)[0]
+        self.update(x, 1.0 if y > 0.0 else -1.0, pred)

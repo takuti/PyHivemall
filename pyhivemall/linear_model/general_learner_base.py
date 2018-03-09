@@ -14,6 +14,11 @@ class GeneralLearnerBase(BaseEstimator):
                  regularization='rda', l1_ratio=0.5, alpha=0.0001, eta='inverse',
                  eta0=0.1, total_steps=None, power_t=0.1, scale=100.0):
 
+        self.mini_batch = mini_batch
+        self.max_iter = max_iter
+        self.disable_cv = disable_cv
+        self.cv_rate = cv_rate
+
         optimizer = optimizer.lower()
         if optimizer == 'adagrad':
             self.optimizer = AdaGrad(regularization=regularization,
@@ -33,6 +38,24 @@ class GeneralLearnerBase(BaseEstimator):
 
     def fit(self, X, y):
         """Fit model."""
+        for i in range(self.max_iter):
+            self.train(X[i], y[i])
+
+    def update(self, x, y, predicted):
+        # TODO: retain cumulative loss to check convergence
+        # loss = self.loss_function.loss(predicted, y)
+
+        dloss = self.loss_function.dloss(predicted, y)
+
+        if self.mini_batch > 1:
+            raise NotImplementedError('Mini-batch training is not implemented yet')
+
+        for i in range(x.shape[0]):
+            if x[i] == 0.0:
+                continue
+            x[i] = self.optimizer.update(None, self.coef_[i], dloss * x[i])
+
+        self.optimizer.proceed_step()
 
     def predict(self, X):
         """Predict using the linear model
@@ -47,6 +70,10 @@ class GeneralLearnerBase(BaseEstimator):
         C : array, shape = (n_samples,)
             Returns predicted values.
         """
+        pred = np.dot(X, self.coef_.T)
+        if self.fit_intercept:
+            pred += self.intercept_.ravel()
+        return pred
 
     @staticmethod
     def load(conn, table, feature_column='feature', weight_column='weight', bias_feature=None, **kwargs):
