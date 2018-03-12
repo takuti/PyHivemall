@@ -18,7 +18,7 @@ class SGDClassifier(LinearModel, linear_model.SGDClassifier):
         parser = LossFunctionOptions.setup(parser, classification=True)
         parser = OptimizerOptions.setup(parser)
         parser = RegularizationOptions.setup(parser)
-        opts = vars(parser.parse_known_args(options.split()))
+        opts = vars(parser.parse_known_args(options.split())[0])
         SGDClassifier.validate_options(opts)
         if opts['loss'] == 'squared':
             opts['loss'] = 'squared_loss'

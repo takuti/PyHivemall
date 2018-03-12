@@ -17,7 +17,7 @@ class SGDRegressor(LinearModel, linear_model.SGDRegressor):
         parser = LossFunctionOptions.setup(parser)
         parser = OptimizerOptions.setup(parser)
         parser = RegularizationOptions.setup(parser)
-        opts = vars(parser.parse_known_args(options.split()))
+        opts = vars(parser.parse_known_args(options.split())[0])
         SGDRegressor.validate_options(opts)
         if opts['loss'] == 'squared':
             opts['loss'] = 'squared_loss'
