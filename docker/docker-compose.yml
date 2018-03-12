@@ -25,7 +25,7 @@ services:
     image: bde2020/hive:2.3.2-postgresql-metastore
     volumes:
       - ./.hiverc:/opt/hive/conf/.hiverc
-      - ./hivemall-core-0.4.2-rc.2-with-dependencies.jar:/opt/hive/hivemall/hivemall-core-0.4.2-rc.2-with-dependencies.jar
+      - ./hivemall-all-0.5.0-incubating.jar:/opt/hive/hivemall/hivemall.jar
       - ./breast_cancer.csv:/opt/hive/examples/files/breast_cancer.csv
       - ./logistic_regression.sql:/root/logistic_regression.sql
     env_file:

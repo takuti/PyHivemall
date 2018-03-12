@@ -2,7 +2,7 @@
 
 > Container orchestration is based on [big-data-europe/docker-hive](https://github.com/big-data-europe/docker-hive)
 
-First and foremost, get source code and build [Hivemall v0.4.2-rc.2](https://github.com/apache/incubator-hivemall/releases/tag/v0.4.2-rc.2), and place `target/hivemall-core-0.4.2-rc.2-with-dependencies.jar` in here.
+First and foremost, get source code and build [Hivemall v0.5.0-rc.3](https://github.com/apache/incubator-hivemall/releases/tag/v0.5.0-rc3), and place `target/hivemall-all-0.5.0-incubating.jar` in here.
 
 Next, run containers:
 

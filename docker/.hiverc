@@ -1,5 +1,5 @@
 -- Install Hivemall
-add jar /opt/hive/hivemall/hivemall-core-0.4.2-rc.2-with-dependencies.jar;
+add jar /opt/hive/hivemall/hivemall.jar;
 
 -- Automatically register some Hivemall functions to easily try Logistic Regression sample
 create temporary function hivemall_version as 'hivemall.HivemallVersionUDF';
