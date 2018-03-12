@@ -10,12 +10,12 @@ class LinearModel(object):
         if opts['loss'] == 'quantile':
             raise NotImplementedError("Loss function 'quantile' is not implemented yet")
 
-        if opts['opt'] == 'adagrad':
-            raise NotImplementedError("optimizer 'adagrad' is not implemented yet")
-        elif opts['opt'] == 'adadelta':
-            raise NotImplementedError("optimizer 'adadelta' is not implemented yet")
-        elif opts['opt'] == 'adam':
-            raise NotImplementedError("optimizer 'adam' is not implemented yet")
+        # if opts['opt'] == 'adagrad':
+        #     raise NotImplementedError("optimizer 'adagrad' is not implemented yet")
+        # elif opts['opt'] == 'adadelta':
+        #     raise NotImplementedError("optimizer 'adadelta' is not implemented yet")
+        # elif opts['opt'] == 'adam':
+        #     raise NotImplementedError("optimizer 'adam' is not implemented yet")
 
         if opts['penalty'] == 'rda':
             raise NotImplementedError("regularization 'rda' is not implemented yet")
