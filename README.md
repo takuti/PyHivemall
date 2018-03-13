@@ -69,3 +69,14 @@ d = [{'categorical1': 'foo', 'categorical2': 'xxx', 'quantitative': 2.0},
 X = vectorizer.transform(d)
 clf.predict(X)  # yields 0/1 binary label
 ```
+
+### Rebuild and update model
+
+Of course, re-fitting model in your local environment and storing the new model is possible:
+
+```py
+clf.fit(X_train, y_train)
+clf.store(conn, 'lr_model_table_sklearn', vectorizer.vocabulary_, bias_feature='bias')
+```
+
+Also see an [example running on Docker containers](docker/) for the usage.
