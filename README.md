@@ -37,14 +37,15 @@ conn = TdConnection(apikey=os.environ['TD_API_KEY'],
 ### Load model with vectorizer
 
 ```py
-from pyhivemall.linear_model import LogisticRegression
-lr, vectorizer = LogisticRegression.load(conn, 'lr_model_table',
-                                         feature_column='feature',
-                                         weight_column='weight',
-                                         bias_feature='bias')
+from pyhivemall.linear_model import SGDClassifier
+clf, vectorizer = SGDClassifier.load(conn, 'lr_model_table',
+                                     feature_column='feature',
+                                     weight_column='weight',
+                                     bias_feature='bias',
+                                     options='-loss log -opt SGD')
 ```
 
-Note that obtained model is basically compatible with corresponding [scikit-learn](http://scikit-learn.org/) model; that is, `lr` has the same parameters and functions as the [`LogisticRegression` model in scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html).
+Note that obtained model is basically compatible with corresponding [scikit-learn](http://scikit-learn.org/) model; that is, `clf` has the same parameters and functions as the [`SGDClassifier` model in scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html).
 
 ### Vectorize and predict
 
@@ -67,5 +68,16 @@ In that case, prediction can be done by:
 d = [{'categorical1': 'foo', 'categorical2': 'xxx', 'quantitative': 2.0},
      {'categorical1': 'bar', 'categorical2': 'yyy', 'quantitative': 4.0}]
 X = vectorizer.transform(d)
-lr.predict(X)  # yields 0/1 binary label
+clf.predict(X)  # yields 0/1 binary label
 ```
+
+### Rebuild and update model
+
+Of course, re-fitting model in your local environment and storing the new model is possible:
+
+```py
+clf.fit(X_train, y_train)
+clf.store(conn, 'lr_model_table_sklearn', vectorizer.vocabulary_, bias_feature='bias')
+```
+
+Also see an [example running on Docker containers](docker/) for the usage.

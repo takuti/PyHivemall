@@ -6,7 +6,25 @@ import numpy as np
 class LinearModel(object):
 
     @staticmethod
-    def load(conn, table, feature_column='feature', weight_column='weight', bias_feature=None, **kwargs):
+    def validate_options(opts):
+        if opts['loss'] == 'quantile':
+            raise NotImplementedError("Loss function 'quantile' is not implemented yet")
+
+        # if opts['opt'] == 'adagrad':
+        #     raise NotImplementedError("optimizer 'adagrad' is not implemented yet")
+        # elif opts['opt'] == 'adadelta':
+        #     raise NotImplementedError("optimizer 'adadelta' is not implemented yet")
+        # elif opts['opt'] == 'adam':
+        #     raise NotImplementedError("optimizer 'adam' is not implemented yet")
+
+        if opts['penalty'] == 'rda':
+            raise NotImplementedError("regularization 'rda' is not implemented yet")
+
+        if opts['learning_rate'] == 'simple':
+            raise NotImplementedError("learning rate 'simple' is not implemented yet")
+
+    @staticmethod
+    def load(conn, table, feature_column='feature', weight_column='weight', bias_feature=None):
         df = conn.fetch_table(table)
 
         intercept = np.array([0.])  # (1,)

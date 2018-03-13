@@ -2,7 +2,7 @@
 
 > Container orchestration is based on [big-data-europe/docker-hive](https://github.com/big-data-europe/docker-hive)
 
-First and foremost, get source code and build [Hivemall v0.4.2-rc.2](https://github.com/apache/incubator-hivemall/releases/tag/v0.4.2-rc.2), and place `target/hivemall-core-0.4.2-rc.2-with-dependencies.jar` in here.
+First and foremost, get source code and build [Hivemall v0.5.0-rc.3](https://github.com/apache/incubator-hivemall/releases/tag/v0.5.0-rc3), and place `target/hivemall-all-0.5.0-incubating.jar` in here.
 
 Next, run containers:
 
@@ -36,28 +36,29 @@ Let's build a Logistic Regression model on the data:
 ```
 > !run /root/logistic_regression.sql
 > select feature, weight from breast_cancer_logress_model order by abs(weight) desc limit 5;
-+----------+----------------------+
-| feature  |        weight        |
-+----------+----------------------+
-| f24      | -190.29006958007812  |
-| f4       | 180.16073608398438   |
-| f3       | 161.74786376953125   |
-| f23      | 155.4984893798828    |
-| f22      | 60.91228103637695    |
-+----------+----------------------+
++----------+---------------------+
+| feature  |       weight        |
++----------+---------------------+
+| f23      | 1129.2266845703125  |
+| f3       | 1099.8594970703125  |
+| f24      | -663.974853515625   |
+| f22      | 353.6787109375      |
+| f4       | 346.53466796875     |
++----------+---------------------+
 ```
 
 Eventually, you can access to the logistic regression model on your local environment:
 
 ```py
 from pyhivemall import HiveConnection
-from pyhivemall.linear_model import LogisticRegression
+from pyhivemall.linear_model import SGDClassifier
 
 conn = HiveConnection(host='localhost', port=10000)
-lr, vectorizer = LogisticRegression.load(conn, 'breast_cancer_logress_model',
-                                         feature_column='feature',
-                                         weight_column='weight',
-                                         bias_feature='0')
+clf, vectorizer = SGDClassifier.load(conn, 'breast_cancer_logress_model',
+                                     feature_column='feature',
+                                     weight_column='weight',
+                                     bias_feature='0',
+                                     options='-loss log -opt SGD -reg l1 -eta fixed')
 ```
 
 Check the accuracy of prediction in Python:
@@ -76,8 +77,42 @@ for sample in breast_cancer.data:
 
 X = vectorizer.transform(d)
 
-y_true, y_pred = breast_cancer.target, lr.predict(X)
-recall_score(y_true, y_pred)     # => 0.7899159663865546
-precision_score(y_true, y_pred)  # => 0.9463087248322147
-f1_score(y_true, y_pred)         # => 0.8610687022900763
+y_true, y_pred = breast_cancer.target, clf.predict(X)
+recall_score(y_true, y_pred)     # => 0.37254901960784315
+precision_score(y_true, y_pred)  # => 1.0
+f1_score(y_true, y_pred)         # => 0.5428571428571428
+```
+
+Insufficient accuracy? Try to re-fit the model by using the true samples:
+
+```py
+clf.fit(X, y_true)
+
+y_pred = clf.predict(X)
+recall_score(y_true, y_pred)     # => 0.988795518207283
+precision_score(y_true, y_pred)  # => 0.8936708860759494
+f1_score(y_true, y_pred)         # => 0.9388297872340425
+```
+
+(Of course it's cheating in reality, though :P)
+
+Eventually, it's time to store the new model to Hive:
+
+```py
+clf.store(conn, 'breast_cancer_logress_model_sklearn', vectorizer.vocabulary_, bias_feature='0')
+```
+
+Check the difference between two models built by Hivemall and scikit-learn:
+
+```
+> select t1.feature, t1.weight as weight_hivemall, t2.weight as weight_sklearn from breast_cancer_logress_model t1 join breast_cancer_logress_model_sklearn t2 on t1.feature = t2.feature limit 5;
++-------------+---------------------+-----------------+
+| t1.feature  |   weight_hivemall   | weight_sklearn  |
++-------------+---------------------+-----------------+
+| f5          | 1.827925443649292   | -1.73197169E10  |
+| f28         | -1.39395272731781   | 2.77178352E11   |
+| f9          | 3.4602367877960205  | -2.57569653E11  |
+| f23         | 1129.2266845703125  | 1.85949288E13   |
+| f13         | 2.792898654937744   | -8.0768412E12   |
++-------------+---------------------+-----------------+
 ```
