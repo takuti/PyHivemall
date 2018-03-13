@@ -1,6 +1,8 @@
 PyHivemall
 ===
 
+![overview](doc/images/overview.png)
+
 **PyHivemall** enables Python code to access and use machine learning model created by [Apache Hivemall](https://github.com/apache/incubator-hivemall), a scalable machine learning library for Apache Hive.
 
 ## Installation
