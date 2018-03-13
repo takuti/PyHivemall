@@ -4,7 +4,7 @@ SELECT
   avg(weight) as weight
 FROM (
   SELECT
-    logress(features, benign) as (feature, weight)
+    train_classifier(features, benign, '-loss log -opt SGD -reg l1 -eta fixed') as (feature, weight)
   FROM (
     SELECT
       add_bias(

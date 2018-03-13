@@ -3,7 +3,7 @@ add jar /opt/hive/hivemall/hivemall.jar;
 
 -- Automatically register some Hivemall functions to easily try Logistic Regression sample
 create temporary function hivemall_version as 'hivemall.HivemallVersionUDF';
-create temporary function logress as 'hivemall.regression.LogressUDTF';
+create temporary function train_classifier as 'hivemall.classifier.GeneralClassifierUDTF';
 create temporary function array_concat as 'hivemall.tools.array.ArrayConcatUDF';
 create temporary function add_bias as 'hivemall.ftvec.AddBiasUDF';
 create temporary function sort_by_feature as 'hivemall.ftvec.SortByFeatureUDF';

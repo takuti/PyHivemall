@@ -41,7 +41,8 @@ from pyhivemall.linear_model import SGDClassifier
 clf, vectorizer = SGDClassifier.load(conn, 'lr_model_table',
                                      feature_column='feature',
                                      weight_column='weight',
-                                     bias_feature='bias')
+                                     bias_feature='bias',
+                                     options='-loss log -opt SGD')
 ```
 
 Note that obtained model is basically compatible with corresponding [scikit-learn](http://scikit-learn.org/) model; that is, `clf` has the same parameters and functions as the [`SGDClassifier` model in scikit-learn](http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html).
