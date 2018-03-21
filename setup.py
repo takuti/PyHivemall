@@ -39,6 +39,7 @@ def setup_package():
         install_requires=[
             'numpy',
             'scikit_learn',
+            'sqlalchemy',
             'pandas-td',
             'pyhive',
             'thrift',
