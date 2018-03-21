@@ -25,6 +25,10 @@ before_install:
 
 install:
   - pip install pandas-td pyhive thrift-sasl # other deps not in conda
+  - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
+      # python-dateutil<2.5.0,>=2.4.0 is required by td-client-python
+      pip install python-dateutil==2.4.0;
+    fi
   - python setup.py install
 
 before_script:
